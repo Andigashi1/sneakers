@@ -23,6 +23,8 @@ function App() {
     quantity: 0,
   });
 
+  //Change the quantity of the item
+
   const handleCount = (type) => {
     if (type === "plus") {
       setCount(count + 1);
@@ -32,6 +34,8 @@ function App() {
       }
     }
   };
+
+  //Change shoe image
 
   const handleShoeCount = (type) => {
     if (type === "next") {
@@ -43,9 +47,13 @@ function App() {
     }
   };
 
+  //Change shoe image on thumbnail click
+
   const handleShoeChange = (index) => {
     setShoeCount(index);
   };
+
+  //Add items to cart
 
   const addToCart = () => {
     if (count > 0) {
@@ -56,6 +64,8 @@ function App() {
     }
     setCount(0);
   };
+
+  //Remove items from cart
 
   const removeItem = () => {
     setCartItems((prev) => ({
@@ -90,7 +100,7 @@ function App() {
       <div className="flex flex-col justify-center lg:flex-row lg:gap-32 lg:mt-20 lg:mx-10">
         <div className="relative max-w-screen-sm self-center">
           <img
-            className="rounded-xl max-w-96"
+            className="lg:rounded-xl max-w-96"
             src={shoes[shoeCount]}
             alt="shoe image 1"
           />
@@ -124,6 +134,7 @@ function App() {
               ))}
             </div>
           )}
+
         </div>
         <div className="mx-8 mt-6 lg:m-0 space-y-4 max-w-screen-sm lg:max-w-md self-center">
           <p className="uppercase font-semibold text-sm text-gray1 tracking-widest">
