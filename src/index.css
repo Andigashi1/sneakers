@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* > button {
+    margin: 0;
+}
+
+.lgnav > li > a {
+    @apply hover:text-black border-b-4 border-transparent hover:border-primary lg:pb-11
+}
