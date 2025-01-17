@@ -45,12 +45,19 @@ function Nav({ cartItems, removeItem, menuOpen, toggleMenu }) {
         </div>
 
         <div>
-          <img
-            className="cursor-pointer hover:brightness-0"
-            src={cart}
-            onClick={toggleCart}
-            alt="cart logo"
-          />
+          <div className="relative">
+            <img
+              className="cursor-pointer hover:brightness-0"
+              src={cart}
+              onClick={toggleCart}
+              alt="cart logo"
+            />
+            {cartItems.quantity > 0 && (
+              <span className="absolute -top-2 -right-2 bg-primary text-white w-4 h-4 text-sm rounded-full flex justify-center items-center">
+                {cartItems.quantity}
+              </span>
+            )}
+          </div>
           <img
             src={avatar}
             className="w-8 lg:w-12 border-2 border-transparent hover:border-primary rounded-full cursor-pointer"
