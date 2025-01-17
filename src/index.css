@@ -12,3 +12,7 @@
 .lgnav > li > a {
     @apply hover:text-black border-b-4 border-transparent hover:border-primary lg:pb-11
 }
+
+.icon:hover {
+    filter: invert(58%) sepia(65%) saturate(1106%) hue-rotate(347deg) brightness(101%) contrast(101%);
+}

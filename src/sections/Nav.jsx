@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import menu from "../assets/images/icon-menu.svg";
 import close from "../assets/images/icon-close.svg";
 import logo from "../assets/images/logo.svg";
@@ -6,22 +7,20 @@ import cart from "../assets/images/icon-cart.svg";
 import avatar from "../assets/images/image-avatar.png";
 import trash from "../assets/images/icon-delete.svg";
 
-function Nav({ cartItems, removeItem }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+function Nav({ cartItems, removeItem, menuOpen, toggleMenu }) {
+  
   const [cartOpen, setCartOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+  //Open and close the cart
 
   const toggleCart = () => {
     setCartOpen(!cartOpen);
   };
 
   return (
-    <div className="mx-2 lg:mx-0 lg:border-b-[1px] border-gray2 lg:pb-8 lg:pt-2">
+    <div className="mx-2 lg:mx-4 lg:border-b-[1px] border-gray2 lg:pb-8 lg:pt-2">
       <div className="flex justify-between p-6 lg:pb-0 lg:px-0 [&>*]:flex [&>*]:justify-center [&>*]:items-center [&>*]:space-x-6">
-        <div className="flex gap-12">
+        <div className="flex gap-4">
           <button onClick={toggleMenu} className="lg:hidden">
             <img src={menu} alt="open menu" />
           </button>
@@ -47,7 +46,7 @@ function Nav({ cartItems, removeItem }) {
 
         <div>
           <img
-            className="hover:cursor-pointer"
+            className="cursor-pointer hover:brightness-0"
             src={cart}
             onClick={toggleCart}
             alt="cart logo"
@@ -59,6 +58,8 @@ function Nav({ cartItems, removeItem }) {
           />
         </div>
       </div>
+
+      {/* Links on mobile view */}
 
       {menuOpen && (
         <>
@@ -98,12 +99,16 @@ function Nav({ cartItems, removeItem }) {
         </>
       )}
 
+      {/* Cart */}
+
       {cartOpen && (
         <div
           className="absolute top-[5.4rem] left-1/2 -translate-x-1/2 max-w-[22rem] w-full bg-white z-10 py-6 rounded-lg
         lg:right-10 lg:top-24 lg:left-auto lg:translate-x-0 shadow-2xl"
         >
-          <p className="font-bold pb-4 px-4 border-b-[1px] border-gray2">Cart</p>
+          <p className="font-bold pb-4 px-4 border-b-[1px] border-gray2">
+            Cart
+          </p>
           {cartItems.quantity > 0 ? (
             <div className="px-4">
               <div className="flex justify-between items-center mt-4">
@@ -121,7 +126,12 @@ function Nav({ cartItems, removeItem }) {
                     </span>
                   </p>
                 </div>
-                <img className="hover:cursor-pointer" onClick={removeItem} src={trash} alt="trash" />
+                <img
+                  className="hover:cursor-pointer"
+                  onClick={removeItem}
+                  src={trash}
+                  alt="trash"
+                />
               </div>
 
               <button className="bg-primary w-full rounded-lg py-3 mt-6 font-bold">
@@ -135,6 +145,18 @@ function Nav({ cartItems, removeItem }) {
       )}
     </div>
   );
+}
+
+Nav.propTypes = {
+  menuOpen: PropTypes.bool.isRequired,
+  toggleMenu: PropTypes.func.isRequired,
+  cartItems: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    img: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    quantity: PropTypes.number.isRequired,
+  }).isRequired,
+  removeItem: PropTypes.func.isRequired,
 }
 
 export default Nav;

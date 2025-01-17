@@ -8,6 +8,7 @@ import prevBtn from "./assets/images/icon-previous.svg";
 import minusBtn from "./assets/images/icon-minus.svg";
 import plusBtn from "./assets/images/icon-plus.svg";
 import cart from "./assets/images/icon-cart.svg";
+import close from "./assets/images/icon-close.svg";
 import { useEffect, useState } from "react";
 
 const shoes = [shoe1, shoe2, shoe3, shoe4];
@@ -15,13 +16,21 @@ const shoes = [shoe1, shoe2, shoe3, shoe4];
 function App() {
   const [count, setCount] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [shoeCount, setShoeCount] = useState(0);
+  const [lightBox, setLightBox] = useState(false);
   const [cartItems, setCartItems] = useState({
     name: "Fall Limited Edition Sneakers",
     img: shoe1,
     price: 125.0,
     quantity: 0,
   });
+
+  //Open and close the menu on mobile view
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
   //Change the quantity of the item
 
@@ -74,35 +83,110 @@ function App() {
     }));
   };
 
+  //Open and close the lightbox
+
+  const toggleLightBox = () => {
+    !isMobile ? setLightBox(!lightBox) : null;
+  };
+
   //Check the size screen on resize
 
   useEffect(() => {
-    let timeoutId;
-
     const handleResize = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        const width = window.innerWidth;
-        setIsMobile(width < 1024);
-      }, 200);
+      const width = window.innerWidth;
+      setIsMobile(width < 1024);
     };
 
     window.addEventListener("resize", handleResize);
+    isMobile ? setLightBox(false) : null; //Close the lightbox on mobile view
+
     return () => {
       window.removeEventListener("resize", handleResize);
-      clearTimeout(timeoutId);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
-    <div className="mb-12 font-primary max-w-screen-xl mx-auto">
-      <Nav cartItems={cartItems} removeItem={removeItem} />
-      <div className="flex flex-col justify-center lg:flex-row lg:gap-32 lg:mt-20 lg:mx-10">
+    <div className="mb-12 font-primary max-w-screen-xl mx-auto flex flex-col justify-center min-h-full">
+      <Nav
+        menuOpen={menuOpen}
+        toggleMenu={toggleMenu}
+        cartItems={cartItems}
+        removeItem={removeItem}
+      />
+      <div className="flex flex-col justify-center lg:flex-row lg:gap-28 lg:mt-20 lg:mx-10">
+        {/* LightBox */}
+
+        {lightBox && (
+          <div className="absolute inset-0 z-10 bg-black/75 flex justify-center items-center">
+            <div className="relative max-w-md flex flex-col">
+              <img
+                className="w-6 mb-4 self-end cursor-pointer icon"
+                src={close}
+                onClick={toggleLightBox}
+                alt="close button"
+              />
+              <img
+                className="rounded-xl"
+                src={shoes[shoeCount]}
+                alt={`shoe ${shoeCount + 1}`}
+              />
+
+              <span className="w-12 h-12 p-4 absolute right-0 translate-x-1/2 top-64 cursor-pointer bg-white rounded-full flex justify-center items-center">
+                <img
+                  onClick={() => handleShoeCount("next")}
+                  src={nextBtn}
+                  className="icon"
+                  alt="previous image button"
+                />
+              </span>
+              <span className="w-12 h-12 p-4 absolute left-0 -translate-x-1/2 cursor-pointer top-64 bg-white rounded-full">
+                <img
+                  onClick={() => handleShoeCount("prev")}
+                  src={prevBtn}
+                  className="icon"
+                  alt="previous image button"
+                />
+              </span>
+
+              <div className="flex justify-between mt-6 mx-8">
+                {shoes.map((shoe, index) => (
+                  <div
+                    key={index}
+                    className={`w-20 h-20 rounded-[0.86rem] cursor-pointer border-2 ${
+                      shoeCount === index
+                        ? "border-primary"
+                        : "border-transparent"
+                    }`}
+                  >
+                    <div className="relative w-full h-full">
+                      <img
+                        src={shoe}
+                        alt={`shoe ${index + 1} thumbnail`}
+                        onClick={() => handleShoeChange(index)}
+                        className="w-full h-full rounded-xl"
+                      />
+                      <div
+                        className={`absolute inset-0 rounded-xl transition-colors cursor-pointer hover:bg-white/25 ${
+                          shoeCount === index ? "bg-white/50" : ""
+                        }`}
+                        onClick={() => handleShoeChange(index)}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Product Images */}
+
         <div className="relative max-w-screen-sm self-center">
           <img
-            className="lg:rounded-xl max-w-96"
+            onClick={() => toggleLightBox()}
+            className={`lg:rounded-xl lg:max-w-96 ${!isMobile ? "cursor-pointer" : ""}`}
             src={shoes[shoeCount]}
-            alt="shoe image 1"
+            alt={`shoe ${shoeCount + 1}`}
           />
           {isMobile ? (
             <>
@@ -122,20 +206,30 @@ function App() {
           ) : (
             <div className="flex justify-between mt-6">
               {shoes.map((shoe, index) => (
-                <img
+                <div
                   key={index}
-                  src={shoe}
-                  alt={`shoe ${index + 1} thumbnail`}
-                  onClick={() => handleShoeChange(index)}
-                  className={`w-20 h-20 rounded-xl cursor-pointer border-2 border-transparent hover:opacity-75 ${
-                    shoeCount === index ? "border-primary opacity-50" : ""
+                  className={`w-20 h-20 rounded-[0.86rem] cursor-pointer border-2 ${
+                    shoeCount === index
+                      ? "border-primary"
+                      : "border-transparent"
                   }`}
-                />
+                >
+                  <img
+                    src={shoe}
+                    alt={`shoe ${index + 1} thumbnail`}
+                    onClick={() => handleShoeChange(index)}
+                    className={`w-full h-full rounded-xl hover:opacity-75 ${
+                      shoeCount === index ? "opacity-50" : ""
+                    }`}
+                  />
+                </div>
               ))}
             </div>
           )}
-
         </div>
+
+        {/* Product Details */}
+
         <div className="mx-8 mt-6 lg:m-0 space-y-4 max-w-screen-sm lg:max-w-md self-center">
           <p className="uppercase font-semibold text-sm text-gray1 tracking-widest">
             Sneaker Company
@@ -159,14 +253,14 @@ function App() {
           <div className="max-lg:space-y-4 lg:flex lg:gap-4">
             <div className="flex justify-between items-center bg-gray-200 px-4 py-3 rounded-md">
               <img
-                className="cursor-pointer px-2 py-2"
+                className="cursor-pointer px-2 py-2 hover:opacity-50"
                 onClick={() => handleCount("minus")}
                 src={minusBtn}
                 alt="minus icon"
               />
               <p className="font-bold text-lg px-6">{count}</p>
               <img
-                className="cursor-pointer px-2"
+                className="cursor-pointer px-2 hover:opacity-50"
                 onClick={() => handleCount("plus")}
                 src={plusBtn}
                 alt="plus icon"
@@ -174,9 +268,9 @@ function App() {
             </div>
             <button
               onClick={addToCart}
-              className="flex items-center justify-center gap-4 bg-primary text-black font-semibold py-3 rounded-md w-full lg:w-3/5"
+              className="flex items-center justify-center gap-4 bg-primary text-black hover:bg-primary/50 font-semibold py-3 rounded-md w-full lg:w-3/5"
             >
-              <img src={cart} alt="cart icon" />
+              <img className="brightness-0" src={cart} alt="cart icon" />
               <span>Add to cart</span>
             </button>
           </div>
