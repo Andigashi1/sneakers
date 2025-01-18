@@ -18,7 +18,7 @@ function Nav({ cartItems, removeItem, menuOpen, toggleMenu }) {
   };
 
   return (
-    <div className="mx-2 lg:mx-4 lg:border-b-[1px] border-gray2 lg:pb-8 lg:pt-2">
+    <div className="mx-2 lg:mx-4 lg:border-b-[1px] border-gray2 lg:pb-8 lg:pt-2 ">
       <div className="flex justify-between p-6 lg:pb-0 lg:px-0 [&>*]:flex [&>*]:justify-center [&>*]:items-center [&>*]:space-x-6">
         <div className="flex gap-4">
           <button onClick={toggleMenu} className="lg:hidden">
@@ -47,7 +47,7 @@ function Nav({ cartItems, removeItem, menuOpen, toggleMenu }) {
         <div>
           <div className="relative">
             <img
-              className="cursor-pointer hover:brightness-0"
+              className="cursor-pointer hover:brightness-0 transition duration-200"
               src={cart}
               onClick={toggleCart}
               alt="cart logo"
@@ -60,7 +60,7 @@ function Nav({ cartItems, removeItem, menuOpen, toggleMenu }) {
           </div>
           <img
             src={avatar}
-            className="w-8 lg:w-12 border-2 border-transparent hover:border-primary rounded-full cursor-pointer"
+            className="w-8 lg:w-12 border-2 border-transparent hover:border-primary transition duration-200 rounded-full cursor-pointer"
             alt="avatar"
           />
         </div>
@@ -70,7 +70,7 @@ function Nav({ cartItems, removeItem, menuOpen, toggleMenu }) {
 
       {menuOpen && (
         <>
-          <div className="fixed top-0 left-0 w-full h-full bg-black opacity-65 z-50 lg:hidden"></div>
+          <div className="fixed top-0 left-0 w-full h-full bg-black opacity-65 transition-opacity z-50 lg:hidden"></div>
           <div className="fixed top-0 left-0 w-72 h-full bg-white z-50 pt-7 px-8 lg:hidden">
             <button onClick={toggleMenu}>
               <img src={close} alt="close menu" />

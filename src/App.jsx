@@ -99,11 +99,12 @@ function App() {
 
     window.addEventListener("resize", handleResize);
     isMobile ? setLightBox(false) : null; //Close the lightbox on mobile view
+    !isMobile && menuOpen ? setMenuOpen(false) : null;
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [isMobile]);
+  }, [isMobile, menuOpen]);
 
   return (
     <div className="mb-12 font-primary max-w-screen-xl mx-auto flex flex-col justify-center min-h-full">
@@ -184,7 +185,9 @@ function App() {
         <div className="relative max-w-screen-sm self-center">
           <img
             onClick={() => toggleLightBox()}
-            className={`lg:rounded-xl lg:max-w-96 ${!isMobile ? "cursor-pointer" : ""}`}
+            className={`lg:rounded-xl lg:max-w-96 ${
+              !isMobile ? "cursor-pointer" : ""
+            }`}
             src={shoes[shoeCount]}
             alt={`shoe ${shoeCount + 1}`}
           />
@@ -251,16 +254,16 @@ function App() {
           </div>
 
           <div className="max-lg:space-y-4 lg:flex lg:gap-4">
-            <div className="flex justify-between items-center bg-gray-200 px-4 py-3 rounded-md">
+            <div className="flex justify-between items-center bg-gray-200 shadow-xl px-4 py-3 rounded-md">
               <img
-                className="cursor-pointer px-2 py-2 hover:opacity-50"
+                className="cursor-pointer px-2 py-2 hover:opacity-50 transition"
                 onClick={() => handleCount("minus")}
                 src={minusBtn}
                 alt="minus icon"
               />
               <p className="font-bold text-lg px-6">{count}</p>
               <img
-                className="cursor-pointer px-2 hover:opacity-50"
+                className="cursor-pointer px-2 hover:opacity-50 transition"
                 onClick={() => handleCount("plus")}
                 src={plusBtn}
                 alt="plus icon"
@@ -268,7 +271,8 @@ function App() {
             </div>
             <button
               onClick={addToCart}
-              className="flex items-center justify-center gap-4 bg-primary text-black hover:bg-primary/50 font-semibold py-3 rounded-md w-full lg:w-3/5"
+              className="flex items-center justify-center gap-4 bg-primary text-black hover:bg-primary/50 
+              shadow-lg shadow-primary hover:shadow-transparent transition font-semibold py-3 rounded-md w-full lg:w-3/5"
             >
               <img className="brightness-0" src={cart} alt="cart icon" />
               <span>Add to cart</span>
