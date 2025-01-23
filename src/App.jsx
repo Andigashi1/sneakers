@@ -10,6 +10,7 @@ import plusBtn from "./assets/images/icon-plus.svg";
 import cart from "./assets/images/icon-cart.svg";
 import close from "./assets/images/icon-close.svg";
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
 const shoes = [shoe1, shoe2, shoe3, shoe4];
 
@@ -283,5 +284,17 @@ function App() {
     </div>
   );
 }
+
+App.propTypes = {
+  menuOpen: PropTypes.bool.isRequired,
+  toggleMenu: PropTypes.func.isRequired,
+  cartItems: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    img: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    quantity: PropTypes.number.isRequired,
+  }).isRequired,
+  removeItem: PropTypes.func.isRequired,
+};
 
 export default App;
